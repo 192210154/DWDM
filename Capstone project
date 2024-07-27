@@ -1,0 +1,57 @@
+Initialize Parameters:
+- Define image size (e.g., 128x128).
+- Set normalization factor (e.g., 1/255).
+Load and Preprocess Data:
+```python for each image 
+in dataset:
+image = load_image(file_path) image = 
+resize(image, (128, 128)) image = 
+normalize(image, factor=1/255) 
+augmented_images = augment(image)
+dataset.append(augmented_images)
+```
+Feature Extraction: ```python for each image in dataset: edges = 
+apply_canny_edge_detector(image) textures = 
+extract_lbp_features(image) color_histogram = 
+compute_color_histogram(image) 
+features.append(concatenate(edges, textures, color_histogram))
+```
+Train CNN Model:
+```python
+cnn_model = build_cnn_model()
+cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) 
+cnn_model.fit(train_data, train_labels, epochs=50, validation_split=0.2,
+callbacks=[early_stopping])
+```
+Train SVM Model:
+```python
+svm_model = SVC(kernel='rbf', C=1, gamma='auto') 
+svm_model.fit(train_features, train_labels)
+```
+Train Random Forest Model:
+```python
+rf_model = RandomForestClassifier(n_estimators=100)
+8/13
+rf_model.fit(train_features, train_labels) 
+```
+Evaluate Models: 
+```python
+cnn_metrics = cnn_model.evaluate(test_data, test_labels) 
+svm_metrics = evaluate_model(svm_model, test_features, test_labels) 
+rf_metrics = evaluate_model(rf_model, test_features, test_labels)
+confusion_matrix_cnn = compute_confusion_matrix(cnn_model, test_data, test_labels) 
+confusion_matrix_svm = compute_confusion_matrix(svm_model, test_features, test_labels) 
+confusion_matrix_rf = compute_confusion_matrix(rf_model, test_features, test_labels)
+```
+Validate Models: 
+```python
+external_metrics_cnn = cnn_model.evaluate(external_test_data, external_test_labels) 
+external_metrics_svm = evaluate_model(svm_model,
+external_test_features,
+external_test_labels)
+external_metrics_rf = evaluate_model(rf_model, external_test_features, external_test_labels)
+real_world_test_cnn = cnn_model.predict(real_world_test_data) 
+real_world_test_svm = 
+svm_model.predict(real_world_test_features) real_world_test_rf = 
+rf_model.predict(real_world_test_features)
+```
